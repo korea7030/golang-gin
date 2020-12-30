@@ -37,12 +37,11 @@ func main() {
 	server.LoadHTMLGlob("templates/*.html")  // pattern 값으로 html 불러옴
 
 	server.Use(gin.Recovery(),
-		middlewares.Logger(),    // custom logger
-		middlewares.BasicAuth(), // custom auth
-		gindump.Dump())          // header/body dump
+		middlewares.Logger(), // custom logger
+		gindump.Dump())       // header/body dump
 
-	// api용 url 따로 분리(/api/videos)
-	apiRoutes := server.Group("/api")
+	// api용 url 따로 분리(/api/videos) (authorization required)
+	apiRoutes := server.Group("/api", middlewares.BasicAuth())
 	{
 		// video 정보 get
 		apiRoutes.GET("/videos", func(ctx *gin.Context) {
@@ -60,10 +59,16 @@ func main() {
 		})
 	}
 
-	// view용 url 따로 분리(/view/videos)
+	// view용 url 따로 분리(/view/videos) (no Authorization required)
 	viewRoutes := server.Group("/view")
 	{
 		viewRoutes.GET("/videos", videoController.ShowAll)
 	}
-	server.Run(":7070")
+	port := os.Getenv("PORT")
+	// Elastic Beanstalk forwards requests to port 5000
+	if port == "" {
+		port = "7070"
+	}
+	server.Run(":" + port)
+
 }
