@@ -36,3 +36,23 @@ github : https://github.com/tpkeeper/gin-dump (gin-dump)
 2. Should bind
   > - ShouldBind, ShouldBindJSON, ShouldBindXML, ShouldBindQuery, ShouldBindYAML 로 구성
   > - bind 에러 발생 시 개발자가 처리 가능
+
+#### Docker with ElasticBeanstalk
+1. Dockerfile 생성
+2. Docker image 생성(생성한 Dockerfile 이미지로)
+3. Dockerrun.aws.json 파일 생성
+```json
+// Dockerrun.aws.json
+{
+  "AWSEBdockerrunVersion": "1",
+  "Image": {
+    "Name": "{ImageName}"
+  },
+  "Ports": [
+    {
+      "ContainerPort": "{portNumber}"
+    }
+  ]
+}
+```
+4. .ebignore 파일 생성(docker로 생성하기 떄문에 eb에 소스들을 올리면 안됨)
