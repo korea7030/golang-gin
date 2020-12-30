@@ -56,3 +56,8 @@ github : https://github.com/tpkeeper/gin-dump (gin-dump)
 }
 ```
 4. .ebignore 파일 생성(docker로 생성하기 떄문에 eb에 소스들을 올리면 안됨)
+
+#### jwt go
+https://github.com/dgrijalva/jwt-go
+#### JWT 참고
+http://www.opennaru.com/opennaru-blog/jwt-json-web-token/

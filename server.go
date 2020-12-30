@@ -6,7 +6,6 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
-	gindump "github.com/tpkeeper/gin-dump"
 	"gitlab.com/pragmaticreviews/gin-poc/controller"
 	"gitlab.com/pragmaticreviews/gin-poc/middlewares"
 	"gitlab.com/pragmaticreviews/gin-poc/service"
@@ -14,8 +13,12 @@ import (
 
 // 사용할 변수를 묶어서 밖에 선언
 var (
-	videoService    service.VideoService       = service.New()
+	videoService service.VideoService = service.New()
+	loginService service.LoginService = service.NewLoginService()
+	jwtService   service.JWTService   = service.NewJWTService()
+
 	videoController controller.VideoController = controller.New(videoService)
+	loginController controller.LoginController = controller.NewLoginController(loginService, jwtService)
 )
 
 // log 파일 생성
@@ -38,10 +41,22 @@ func main() {
 
 	server.Use(gin.Recovery(),
 		middlewares.Logger(), // custom logger
-		gindump.Dump())       // header/body dump
+	)
+
+	// login Endpoint: Authentication + Token Creation
+	server.POST("/login", func(ctx *gin.Context) {
+		token := loginController.Login(ctx)
+		if token != "" {
+			ctx.JSON(http.StatusOK, gin.H{
+				"token": token,
+			})
+		} else {
+			ctx.JSON(http.StatusUnauthorized, nil)
+		}
+	})
 
 	// api용 url 따로 분리(/api/videos) (authorization required)
-	apiRoutes := server.Group("/api", middlewares.BasicAuth())
+	apiRoutes := server.Group("/api", middlewares.AuthorizeJWT())
 	{
 		// video 정보 get
 		apiRoutes.GET("/videos", func(ctx *gin.Context) {
