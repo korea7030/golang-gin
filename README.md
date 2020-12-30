@@ -70,3 +70,7 @@ github : https://github.com/tpkeeper/gin-dump (gin-dump)
 https://github.com/dgrijalva/jwt-go
 #### JWT 참고
 http://www.opennaru.com/opennaru-blog/jwt-json-web-token/
+
+#### Golang ORM(gorm)
+https://gorm.io/  
+go ORM 비교 : https://blog.billo.io/devposts/go_orm_recommandation/

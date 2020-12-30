@@ -1,3 +1,4 @@
 .vscode/*
 gin.log
 .elasticbeanstalk/*
+test.db
