@@ -31,25 +31,39 @@ func main() {
 
 	// server := gin.Default() 와 같음
 	server := gin.New()
+
+	// static 및 html load 방법
+	server.Static("/css", "./templates/css") // 상대경로, root경로
+	server.LoadHTMLGlob("templates/*.html")  // pattern 값으로 html 불러옴
+
 	server.Use(gin.Recovery(),
 		middlewares.Logger(),    // custom logger
 		middlewares.BasicAuth(), // custom auth
 		gindump.Dump())          // header/body dump
 
-	// video 정보 get
-	server.GET("/videos", func(ctx *gin.Context) {
-		ctx.JSON(200, videoController.FindAll())
-	})
+	// api용 url 따로 분리(/api/videos)
+	apiRoutes := server.Group("/api")
+	{
+		// video 정보 get
+		apiRoutes.GET("/videos", func(ctx *gin.Context) {
+			ctx.JSON(200, videoController.FindAll())
+		})
 
-	// video 정보 post
-	server.POST("/videos", func(ctx *gin.Context) {
-		err := videoController.Save(ctx)
-		if err != nil {
-			ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		} else {
-			ctx.JSON(http.StatusOK, gin.H{"message": "Video Input Is Valid!"})
-		}
-	})
+		// video 정보 post
+		apiRoutes.POST("/videos", func(ctx *gin.Context) {
+			err := videoController.Save(ctx)
+			if err != nil {
+				ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			} else {
+				ctx.JSON(http.StatusOK, gin.H{"message": "Video Input Is Valid!"})
+			}
+		})
+	}
 
+	// view용 url 따로 분리(/view/videos)
+	viewRoutes := server.Group("/view")
+	{
+		viewRoutes.GET("/videos", videoController.ShowAll)
+	}
 	server.Run(":7070")
 }

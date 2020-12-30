@@ -8,12 +8,21 @@ project
 │   go.sum
 │   README.md
 │   server.go
+│   .gitignore
 └───controller
 │   │   video-controller.go
 │───entity
 │   │   video.go
 │───service
 │   │   video-service.go
+│───templates
+│   │───css
+│   │   │   index.css
+│   │   footer.html
+│   │   header.html
+│   │   index.html
+│───validators
+│   │   validators.go
 ```
 
 #### package

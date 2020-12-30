@@ -1,6 +1,8 @@
 package controller
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"gitlab.com/pragmaticreviews/gin-poc/entity"
@@ -12,6 +14,7 @@ import (
 type VideoController interface {
 	FindAll() []entity.Video
 	Save(ctx *gin.Context) error
+	ShowAll(ctx *gin.Context)
 }
 
 // controller struct : service와 연결 역할
@@ -52,4 +55,14 @@ func (c *controller) Save(ctx *gin.Context) error {
 	c.service.Save(video)
 	return nil
 
+}
+
+// VideoController interface의 html load 함수
+func (c *controller) ShowAll(ctx *gin.Context) {
+	videos := c.service.FindAll()
+	data := gin.H{
+		"title":  "video Page",
+		"videos": videos,
+	}
+	ctx.HTML(http.StatusOK, "index.html", data)
 }
