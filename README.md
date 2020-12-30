@@ -11,10 +11,19 @@ project
 │   .gitignore
 └───controller
 │   │   video-controller.go
+│   │   login-controller.go
+│───dto
+│   │   credentials.go (jwt credentials)
 │───entity
 │   │   video.go
 │───service
 │   │   video-service.go
+│   │   jwt-service.go
+│   │   login-service.go
+│───middlewares
+│   │   basic-auth.go
+│   │   jwt-auth.go
+│   │   logger.go
 │───templates
 │   │───css
 │   │   │   index.css
