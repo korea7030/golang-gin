@@ -9,11 +9,18 @@ project
 │   README.md
 │   server.go
 │   .gitignore
+│───api
+│   │   video-api.go
 └───controller
 │   │   video-controller.go
 │   │   login-controller.go
+│───docs
+│   │   docs.go
+│   │   swagger.json
+│   │   swagger.yaml
 │───dto
 │   │   credentials.go (jwt credentials)
+│   │   response.go
 │───entity
 │   │   video.go
 │───service
@@ -74,3 +81,27 @@ http://www.opennaru.com/opennaru-blog/jwt-json-web-token/
 #### Golang ORM(gorm)
 https://gorm.io/  
 go ORM 비교 : https://blog.billo.io/devposts/go_orm_recommandation/
+
+
+#### REST API swagger
+1. API comment 등록 
+2. swag library 다운로드
+```bash
+$ go get -u github.com/swaggo/swag/cmd/swag
+```
+3. go root folder에서 다음 명령어 실행. 주의사항: 무조건 main.go 파일이 있어야 한다.  
+다른파일명을 root source로 할경우 실행 안됨
+```
+$ swag init
+```
+4. gin-swagger 다운로드
+```
+$ go get -u github.com/swaggo/gin-swagger
+$ go get -u github.com/swaggo/files
+```
+5. import 
+```go
+import "github.com/swaggo/gin-swagger" // gin-swagger middleware
+import "github.com/swaggo/files" // swagger embed files
+```
+github 사이트 : https://github.com/swaggo/gin-swagger
