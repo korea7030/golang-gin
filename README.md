@@ -105,3 +105,7 @@ import "github.com/swaggo/gin-swagger" // gin-swagger middleware
 import "github.com/swaggo/files" // swagger embed files
 ```
 github 사이트 : https://github.com/swaggo/gin-swagger
+
+#### BDD
+ginkgo : github.com/onsi/ginkgo (BDD 제공)  
+gomega : github.com/onsi/gomega (ginkgo와 같이 쓰이며, assertion 제공)
